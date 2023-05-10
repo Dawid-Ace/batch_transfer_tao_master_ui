@@ -1,0 +1,13 @@
+.app-container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 100%;
+	height: 100vh;
+}
+
+.header-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
