@@ -4,7 +4,7 @@ export const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   items-align: center;
-`
+`;
 
 export const Label = styled.p`
   font-weight: 600;
@@ -21,7 +21,7 @@ export const Switch = styled.p`
   text-decoration: underline;
   margin: 0px;
   cursor: pointer;
-`
+`;
 
 export const FormWrapper = styled.form`
   max-width: 750px;
@@ -33,20 +33,20 @@ export const FormWrapper = styled.form`
 `;
 
 export const FormInput = styled.div`
-  border: solid 1px #B8C9C9;
+  border: solid 1px #b8c9c9;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   padding: 16px;
   background-color: white;
   min-height: 100px;
-`
+`;
 
 export const Comment = styled.div`
-  color: #899A9A;
+  color: #899a9a;
   font-weight: 400;
   font-size: 16px;
   line-height: 160%;
-`
+`;
 export const SendButton = styled.button`
   width: 106px;
   height: 50px;
@@ -57,7 +57,7 @@ export const SendButton = styled.button`
   line-height: 160%;
   color: white;
   margin-top: 120px;
-`
+`;
 
 export const ResultWrapper = styled.div`
   display: flex;
@@ -65,15 +65,15 @@ export const ResultWrapper = styled.div`
   color: ${(props) => props.color};
   border-color: red;
   margin-top: 18px;
-`
+`;
 
 export const ResultListItem = styled.div`
-  border: solid 1px #B8C9C9;
+  border: solid 1px #b8c9c9;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   padding: 16px;
   background-color: white;
-`
+`;
 
 export const TransferSuccess = styled.div`
   display: flex;
@@ -81,10 +81,10 @@ export const TransferSuccess = styled.div`
   align-items: center;
   font-weight: 500;
   font-size: 12px;
-  
+
   z-index: 10;
 
-  padding-left:15px;
+  padding-left: 15px;
   padding-right: 30px;
 
   position: absolute;
@@ -92,11 +92,11 @@ export const TransferSuccess = styled.div`
   height: 40px;
   top: 46px;
 
-  background: #0AA07B;
+  background: #0aa07b;
   border-radius: 4px;
 
   margin: 0px;
-`
+`;
 
 export const BlurRect = styled.div`
   width: 100%;
@@ -106,7 +106,7 @@ export const BlurRect = styled.div`
   top: 0px;
   background: rgba(0, 0, 30, 0.3);
   z-index: 10;
-`
+`;
 export const ConnectWallet = styled.button`
-  color: black
-`
+  color: black;
+`;

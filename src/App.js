@@ -6,9 +6,7 @@ function App() {
   return (
     <ApiContextProvider>
       <div className="app-container">
-        <div className="header-container">
-          Batch Transfer For Bittensor
-        </div>
+        <div className="header-container">Batch Transfer For Bittensor</div>
 
         <div className="main-container">
           <TransferForm />

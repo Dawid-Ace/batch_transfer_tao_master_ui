@@ -18,7 +18,7 @@ const initialState = {
   api: null,
   apiError: null,
   apiState: null,
-  currentAccount: null
+  currentAccount: null,
 };
 
 ///
@@ -64,10 +64,10 @@ const connect = (state, dispatch) => {
   _api.on('connected', () => {
     dispatch({ type: 'CONNECT', payload: _api });
     // `ready` event is not emitted upon reconnection and is checked explicitly here.
-    _api.isReady.then(_api => dispatch({ type: 'CONNECT_SUCCESS' }));
+    _api.isReady.then((_api) => dispatch({ type: 'CONNECT_SUCCESS' }));
   });
   _api.on('ready', () => dispatch({ type: 'CONNECT_SUCCESS' }));
-  _api.on('error', err => dispatch({ type: 'CONNECT_ERROR', payload: err }));
+  _api.on('error', (err) => dispatch({ type: 'CONNECT_ERROR', payload: err }));
 };
 
 // Loading accounts from dev and polkadot-js extension
@@ -81,7 +81,7 @@ const loadAccounts = (_state, dispatch) => {
 
       allAccounts = allAccounts.map(({ address, meta }) => ({
         address,
-        meta: { ...meta, name: `${meta.name} (${meta.source})` }
+        meta: { ...meta, name: `${meta.name} (${meta.source})` },
       }));
 
       Keyring.loadAll({}, allAccounts);
@@ -96,7 +96,7 @@ const loadAccounts = (_state, dispatch) => {
 
 const ApiContext = React.createContext();
 
-const ApiContextProvider = props => {
+const ApiContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -113,7 +113,9 @@ const ApiContextProvider = props => {
   const connectWallet = () => connect(state, dispatch);
 
   return (
-    <ApiContext.Provider value={{ state, connectWallet, setCurrentAccount }}>{props.children}</ApiContext.Provider>
+    <ApiContext.Provider value={{ state, connectWallet, setCurrentAccount }}>
+      {props.children}
+    </ApiContext.Provider>
   );
 };
 
