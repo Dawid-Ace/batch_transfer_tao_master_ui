@@ -1,17 +1,20 @@
 import './App.css';
 import { TransferForm } from './components/TransferForm';
+import { ApiContextProvider } from './contexts';
 
 function App() {
   return (
-    <div className="app-container">
-      <div className="header-container">
-        Batch Transfer For Bittensor
-      </div>
+    <ApiContextProvider>
+      <div className="app-container">
+        <div className="header-container">
+          Batch Transfer For Bittensor
+        </div>
 
-      <div className="main-container">
-        <TransferForm />
+        <div className="main-container">
+          <TransferForm />
+        </div>
       </div>
-    </div>
+    </ApiContextProvider>
   );
 }
 

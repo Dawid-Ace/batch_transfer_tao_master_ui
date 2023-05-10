@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import { DragDrop } from "../DragDrop";
+import { UNIT } from '../../utils/config';
+import { web3FromSource } from '@polkadot/extension-dapp';
+import { useApi } from '../../contexts';
 
 export const TransferForm = () => {
-  /*
+
+  const [balance, setBalance] = useState(0);
+  const [txStatus, setTxStatus] = useState({});
+  const [pending, setPending] = useState(false);
+  const [inputMode, setInputMode] = useState('input');
+  const isInputMode = inputMode === 'input';
+  const [isSuccess, setSuccess] = useState(true);
+  const [inputs, setInputs] = useState([]);
+
+  const {
+    connectWallet,
+    setCurrentAccount,
+    state: { api, currentAccount, keyring }
+  } = useApi();
+
   const fetchUserBalance = async address => {
     const res = await api.query.system.account(address);
     if (res.isEmpty) return 0;
@@ -32,6 +49,10 @@ export const TransferForm = () => {
     return [address, { signer: injector.signer }];
   };
 
+  const fetchInfo = () => {
+    fetchAndSetUserBalance();
+  };
+
   const txResHandler = ({ status }) => {
     setTxStatus({
       visible: true,
@@ -54,14 +75,42 @@ export const TransferForm = () => {
       .finally(() => setPending(false));
   };
 
-  const onUnstake = () => {
-    submitTx(api.tx.subtensorModule.removeStake(HOTKEY, Math.floor(amount * UNIT)));
+  const onTransfer = (address, amount) => {
+    submitTx(api.tx.balances.transfer(address, amount * UNIT)
+    );
   };
-  */
 
-  const [inputMode, setInputMode] = useState('input');
-  const isInputMode = inputMode === 'input';
-  const [isSuccess, setSuccess] = useState(true);
+  const onSend = (e) => {
+    e.preventDefault();
+
+    console.log(inputs);
+
+    inputs.forEach(input => {
+      const { id, amount } = input;
+      console.log(id, amount)
+      onTransfer(id, amount);
+    })
+  }
+
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    if (!keyring) return;
+    const _accounts = keyring.getPairs().map(account => ({
+      key: account.address,
+      value: account.address,
+      text: account.meta.name.toUpperCase()
+    }));
+    setAccounts(_accounts);
+
+    if (_accounts.length)
+      setCurrentAccount(keyring.getPair(_accounts[0].value));
+  }, [keyring]);
+
+  useEffect(() => {
+    if (currentAccount === null) return;
+    fetchInfo();
+  }, [currentAccount]);
 
   const FlexWrapper = styled.div`
     display: flex;
@@ -173,6 +222,24 @@ export const TransferForm = () => {
 
   const sendForm =
     (<FormWrapper>
+      <button onClick={connectWallet}> Connect </button>
+      <select value={currentAccount ? currentAccount.address : ''} onChange={(e) => {
+        setCurrentAccount(keyring.getPair(e.target.value));
+      }}>
+        {
+          accounts.map((account, index) => (<option key={index} value={account.key}> {account.key} </option>))
+        }
+      </select>
+
+      <p>
+        {
+          currentAccount !== null ? currentAccount['address'] : ''
+        }
+      </p>
+      {
+        currentAccount ? balance : 'Not fetched'
+      }
+
       <FlexWrapper>
         <Label> Addresses with Amounts </Label>
 
@@ -185,7 +252,7 @@ export const TransferForm = () => {
 
       {
         isInputMode ? <FormInput contentEditable placeholder="Insert address and amount, seperate with comma" />
-          : <DragDrop />
+          : <DragDrop setData={(data) => setInputs(data)} />
       }
 
       <Comment>
@@ -205,7 +272,7 @@ export const TransferForm = () => {
         </ResultListItem>
       </ResultWrapper>
 
-      <SendButton>
+      <SendButton onClick={onSend}>
         Send
       </SendButton>
     </FormWrapper>

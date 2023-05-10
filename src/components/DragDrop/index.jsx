@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components';
 import { read, utils } from 'xlsx';
 
-export const DragDrop = () => {
+export const DragDrop = (props) => {
   const [dragActive, setDragActive] = React.useState(false);
-  const [tb, setTable] = React.useState([]);
+  const { setData } = props;
 
   const inputRef = React.useRef(null);
 
@@ -31,20 +31,25 @@ export const DragDrop = () => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       const files = e.target.files;
-
-      setTable([]);
+      let data = [];
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const reader = new FileReader();
+        // eslint-disable-next-line no-loop-func
         reader.onload = (event) => {
           const wb = read(event.target.result);
           const sheets = wb.SheetNames;
 
-          if (sheets.length)
-            setTable((prev) => [...prev, ...utils.sheet_to_json(wb.Sheets[sheets[0]])]);
+          if (sheets.length) {
+            data = [...data, ...utils.sheet_to_json(wb.Sheets[sheets[0]])];
+            console.log(data)
+            setData(data)
+          }
         }
+
         reader.readAsArrayBuffer(file);
+
       }
     }
   };
